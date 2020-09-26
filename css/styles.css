@@ -90,8 +90,7 @@
         /*border: 3px solid rgba(119, 0, 199, 0.89);*/
         min-height: 100vh;
         background: none;
-        font-family: Androgyne;
-        background-image: url('./img/rbg-4.png'), url('./img/rbg-1.png'), url('./img/rbg-1.png');
+        background-image: url('https://github.com/dearCuriosity/rbg/blob/master/img/rbg-4.png?raw=true'), url('https://github.com/dearCuriosity/rbg/blob/master/img/rbg-1.png?raw=true'), url('https://github.com/dearCuriosity/rbg/blob/master/img/rbg-1.png?raw=true');
         height: auto;
         /* 100%, but doesn't work all the time */
         left: 0;
