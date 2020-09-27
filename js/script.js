@@ -9,7 +9,7 @@ project 1 - A Random Quote Generator
 
 var quotes = [
     {
-        quote: 'Women will have achieved true equality when men share with them the responsibility of bringing up the next generation.',
+        quote: 'Women will have achieved true equality when men share with them the responsibility of bringing up the next generation.**',
         source: 'Ruth Bader Ginsburg',
         citation: '',
         url: 'www.google.com/search?hl=en&as_q=Ruth+Bader+Ginsburg',
@@ -53,29 +53,35 @@ var quotes = [
 ];
 
 //console.table(quotes);
-let previousQuote = -1;
+let quoteCheck = [];
 var timer = 100;
+
+// Make sure same quote doesn't repeat
+function duplicateCheck(index) {
+    if (index === quoteCheck) {
+        //console.log(`SAME QUOTE = TRUE \n NEW= ${index.quote}\n OLD= ${quoteCheck.quote}`);
+        return true;
+    } else {
+        //console.log(`SAME QUOTE = FALSE\n NEW= ${index.quote}\n OLD= ${quoteCheck.quote}`);
+        return false;
+    }
+}
 
 /***
  * `getRandomQuote` function
 ***/
+
 function getRandomQuote() {
     let quotesCount = quotes.length;
-    //console.log(quotesCount);
-    //const randomNumber = Math.floor(Math.random() * quotesCount);
     const randomQuote = Math.floor(Math.random() * quotesCount);
-    //const testQuote = Math.floor(Math.random() * quotesCount) - 1;
-    //console.log(`Random Quote = ${randomQuote}, Test Quote = ${testQuote}, Random Number = ${randomNumber}`);
-    //console.log(`Random Quote = ${randomQuote}, Previous Quote = ${previousQuote}`);
-    return randomQuote;
+    return quotes[randomQuote];
 }
 
 function randomBackgroundColor() {
     let randomColor = Math.floor(Math.random() * 16777215).toString(16);
     document.body.style.backgroundColor = "#" + randomColor;
-    // To Do find a way to programmatically limit randomization to acceptable color bands that work will with rbg animation layer
+    // TO DO find a way to programmatically limit randomization to acceptable color bands that work will with rbg animation layer
 }
-
 
 // Timer functions used for changing quote/colors
 function initiateTimer() {
@@ -92,30 +98,30 @@ function clearTimer() {
 
 function printQuote() {
 
-    // Make sure same quote doesn't repeat
+    
+    // getting random quote
     do {
         currentQuote = getRandomQuote();
     }
-    while (currentQuote === previousQuote);
+    // checking for duplicates first
+    while (duplicateCheck(currentQuote));
 
-    // Update variable to catch repeats
-    previousQuote = currentQuote;
-
+    // Update variable to catch duplicates
+    quoteCheck = currentQuote;
+    
     // Build HTML
-    let html = `<p class="quote--text">${quotes[currentQuote].quote}</p> 
-                <p class="quote--attribution">${quotes[currentQuote].source}`;
-    //console.log(html);
-    //console.log(`Year=${quotes[currentQuote].year}`);
-    if (quotes[currentQuote].year >= 0 && quotes[currentQuote].year != '') {
-        html += `, <span class="quote--year">${quotes[currentQuote].year}</span></p>`;
+    let html = `<p class="quote--text">${currentQuote.quote}</p> 
+                <p class="quote--attribution">${currentQuote.source}`;
+    if (currentQuote.year >= 0 && currentQuote.year != '') {
+        html += `, <span class="quote--year">${currentQuote.year}</span></p>`;
     }
     else {
         html += `</p>`;
     }
 
-    if (quotes[currentQuote].citation != '') {
-        if (quotes[currentQuote].url != '') {
-            html += `<p class="quote--source">Source: <a href="https://${quotes[currentQuote].url}">${quotes[currentQuote].citation}</a> &#x1f9d0;</p>`;
+    if (currentQuote.citation != '') {
+        if (currentQuote.url != '') {
+            html += `<p class="quote--source">Source: <a href="https://${currentQuote.url}">${currentQuote.citation}</a> &#x1f9d0;</p>`;
         }
     }
     else {
@@ -126,13 +132,11 @@ function printQuote() {
     document.getElementById('testid').innerHTML = html;
     randomBackgroundColor();
     // TO DO rewrite using insertAdjacentHTML and some way to remove previously added nodes
-    // document.getElementById('testid').insertAdjacentHTML('beforeend',html);
 
     // clear and set timers when function runs
     clearTimer();
-    console.log(`Cleared Timer = ${timer}`);
     initiateTimer();
-    console.log(`Initiating Timer = ${timer}`);
+    
 }
 
 // fill empty div on initial page load
